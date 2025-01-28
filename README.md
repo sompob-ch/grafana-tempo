@@ -1,0 +1,1 @@
+- [Setup]https://grafana.com/docs/tempo/latest/setup/

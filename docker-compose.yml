@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - tempo
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    ports:
+      - "3200:3200"   # Tempo's HTTP API port
+      - "9095:9095"   # Tempo's gRPC API port
+      - "4317:4317"  # Tempo OTLP gRPC
+      - "4318:4318"  # Tempo OTLP HTTP
+    volumes:
+      - ./tempo-data:/etc/tempo
+    command:
+      - --config.file=/etc/tempo/tempo.yaml
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-tempo
+    ports:
+      - "27017:27017"
+
+volumes:
+  grafana-data:
+  tempo-data:
