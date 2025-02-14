@@ -28,7 +28,7 @@ services:
       - --config.file=/etc/tempo/tempo.yaml
 
   mongodb:
-    image: mongo:latest
+    build: ./mongodb
     container_name: mongodb-tempo
     ports:
       - "27017:27017"
